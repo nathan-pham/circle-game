@@ -10,6 +10,10 @@ export default class Component {
         this.name = name;
     }
 
+    remove() {
+        this.engine.removeById(this.id);
+    }
+
     mount() {}
 
     unmount() {}
