@@ -3,13 +3,14 @@ import Vector from "../engine/Vector";
 
 export default class Bullet extends Component {
     pos: Vector;
-    vel = new Vector(5, 0);
+    vel: Vector;
     acc = new Vector(0, 0);
-    r = 5;
+    r = 7;
 
-    constructor(pos: Vector) {
+    constructor(pos: Vector, vel: Vector) {
         super({ name: "bullet" });
         this.pos = pos;
+        this.vel = vel;
     }
 
     update() {
@@ -24,9 +25,9 @@ export default class Bullet extends Component {
         const d = this.r * 2;
 
         if (
-            this.pos.x < d ||
+            this.pos.x < -d ||
             this.pos.x > width + d ||
-            this.pos.y < d ||
+            this.pos.y < -d ||
             this.pos.y > height + d
         ) {
             this.engine.removeById(this.id);
@@ -36,7 +37,7 @@ export default class Bullet extends Component {
     draw() {
         const { ctx } = this.engine;
 
-        ctx.fillStyle = "blue";
+        ctx.fillStyle = this.engine.config.primaryLighter;
         ctx.beginPath();
         ctx.arc(this.pos.x, this.pos.y, this.r, 0, Math.PI * 2);
         ctx.fill();

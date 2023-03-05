@@ -5,19 +5,21 @@ import Bullet from "./Bullet";
 export default class Player extends Component {
     pos = new Vector(0, 0);
     layer = 5;
+    r = 40;
 
     constructor() {
         super({ name: "player" });
     }
 
     mount() {
-        const {
-            size: { width, height },
-        } = this.engine;
-        this.pos = new Vector(width / 2, height / 2);
+        this.pos = this.engine.origin.copy();
 
         addEventListener("click", () => {
-            this.engine.add(new Bullet(this.pos.copy()));
+            const mouse = new Vector(this.engine.mouse.x, this.engine.mouse.y)
+                .sub(this.pos.copy())
+                .setMag(5);
+
+            this.engine.add(new Bullet(this.pos.copy(), mouse));
         });
     }
 
@@ -27,9 +29,9 @@ export default class Player extends Component {
             size: { width, height },
         } = this.engine;
 
-        ctx.fillStyle = "red";
+        ctx.fillStyle = this.engine.config.primary;
         ctx.beginPath();
-        ctx.arc(width / 2, height / 2, 20, 0, Math.PI * 2);
+        ctx.arc(width / 2, height / 2, this.r, 0, Math.PI * 2);
         ctx.fill();
     }
 }
